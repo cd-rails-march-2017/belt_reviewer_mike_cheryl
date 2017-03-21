@@ -4,7 +4,7 @@ class EventsController < ApplicationController
     @user = User.find(session[:user_id])
     @local_events = Event.where("state =?", @user.state).order("date DESC")
     @other_events = Event.where("state !=?", @user.state).order("date DESC")
-    @attendees = EventAttendee.all
+    @attending = @user.attending
   end
 
   def create
@@ -19,9 +19,20 @@ class EventsController < ApplicationController
   end
 
   def show
+    @event = Event.find(params[:id])
+    @attendees = EventAttendee.where("event_id = ?", @event.id)
+    @comments = Comment.where("event_id = ?", @event.id).order("created_at DESC")
   end
 
-  def edit
+  def join_event
+    EventAttendee.create(event_id: params[:id], user_id: session[:user_id])
+    redirect_to :back
+  end
+
+  def leave_event
+    @event = EventAttendee.find_by("event_id = ? AND user_id = ?", params[:id], session[:user_id])
+    @event.destroy
+    redirect_to :back
   end
 
   protected

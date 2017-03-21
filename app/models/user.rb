@@ -3,7 +3,8 @@ class User < ActiveRecord::Base
 
   has_secure_password
   has_many :event_comments, through: :comments, source: :event, dependent: :destroy
-  has_many :Event_Attendees
+  has_many :event_attendees
+  has_many :attending, source: :event, through: :event_attendees
 
   EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]+)\z/i
   validates :first_name, :last_name, :city, :state, presence: true

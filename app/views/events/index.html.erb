@@ -14,15 +14,17 @@
   <tbody>
     <% @local_events.each do |event| %>
       <tr>
-        <td><%= event.name %></td>
+        <td><a href="/events/<%= event.id %>"><%= event.name %></a></td>
         <td><%= event.date %></td>
         <td><%= event.city %></td>
         <td><%= event.host.first_name %></td>
         <td>
           <% if event.host.id == session[:user_id] %>
             <a href=''>Edit</a> | <a href=''>Delete</a>
-          <% elsif session[:user_id] == %>
-
+          <% elsif @attending.include?(event) %>
+            <span>Joining</span> | <a href="/events/<%= event.id %>/unjoin">Cancel</a>
+          <% else %>
+            <a href="/events/<%= event.id %>/join">Join</a>
           <% end %>
         </td>
       </tr>
@@ -43,7 +45,7 @@
   <tbody>
     <% @other_events.each do |event| %>
       <tr>
-        <td><%= event.name %></td>
+        <td><a href="events/<%= event.id %>"><%= event.name %></a></td>
         <td><%= event.date %></td>
         <td><%= event.city %></td>
         <td><%= event.state %></td>

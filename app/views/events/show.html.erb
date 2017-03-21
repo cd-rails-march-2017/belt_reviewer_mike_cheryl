@@ -1,2 +1,49 @@
-<h1>Events#show</h1>
-<p>Find me in app/views/events/show.html.erb</p>
+<a href='/events'>Events Dashboard</a> | <a href='/sessions/logout'>Logout</a>
+<div>
+  <div class="col-md-8">
+    <h3><%= @event.name %></h3>
+
+    <h5>Host: <%= @event.host.first_name %></h5>
+    <h5>Date: <%= @event.date %></h5>
+    <h5>Location: <%= @event.city %>, <%= @event.state %></h5>
+    <h5>People who are joining the event: <%= @attendees.count %></h5>
+
+    <table class="table table-striped">
+      <thead>
+        <th>Name</th>
+        <th>Location</th>
+        <th>State</th>
+      </thead>
+      <tbody>
+        <% @attendees.each do |attendee| %>
+        <tr>
+          <td><%= attendee.user.first_name %> <%= attendee.user.last_name %></td>
+          <td><%= attendee.user.city %></td>
+          <td><%= attendee.user.state %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+  </div>
+  <div class="col-md-4">
+    <h5>Discussion about this event:</h5>
+    <div id="comments">
+      <% @comments.each do |comment| %>
+      <p><%= comment.user.first_name %> says: <%= comment.content %></p>
+      <p>------------------</p>
+      <% end %>
+    </div>
+    <p>Add Comment:</p>
+    <form action="/events/<%= @event.id %>" method="post">
+      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+      <textarea name="comment" rows="8" cols="40"></textarea>
+      <input type="submit" value="Submit Comment">
+    </form>
+    <% if flash[:notice] %>
+      <% flash[:notice].each do |notice| %>
+        <p class="text-danger"><%= notice %></p>
+      <% end %>
+    <% end %>
+  </div>
+</div>
