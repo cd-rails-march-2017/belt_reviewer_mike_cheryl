@@ -1,6 +1,10 @@
 class UsersController < ApplicationController
   def new
-    @user = User.new
+    if session[:user_id]
+      redirect_to events_path
+    else
+      @user = User.new
+    end
   end
 
   def create
@@ -23,13 +27,13 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find(session[:user_id])
-    @user.update(update_params)
+    @user.update(first_name: params[:first_name], last_name: params[:last_name], email: params[:email], city: params[:city], state: params[:state])
     if @user.save
       flash[:notice] = ["Information updated."]
       redirect_to events_path
     else
       flash[:notice] = @user.errors.full_messages
-      redirect_to "users/#{session[:user_id]}"
+      redirect_to "/users/#{session[:user_id]}"
     end
   end
 
@@ -39,6 +43,6 @@ class UsersController < ApplicationController
     end
 
     def update_params
-      params.require(:user).permit(:first_name, :last_name, :email, :city, :state)
+      params.permit(:first_name, :last_name, :email, :city, :state)
     end
 end

@@ -1,2 +1,84 @@
-<h1>Events#index</h1>
-<p>Find me in app/views/events/index.html.erb</p>
+<a href='/users/<%= @user.id %>'>Edit My Profile</a> | <a href='/sessions/logout'>Logout</a>
+<h3>Welcome, <%= @user.first_name %> </h3>
+
+<h3>Here are some of the events at your state</h3>
+
+<table class="table table-striped">
+  <thead>
+    <th>Name</th>
+    <th>Date</th>
+    <th>Location</th>
+    <th>Host</th>
+    <th>Action/Status</th>
+  </thead>
+  <tbody>
+    <% @local_events.each do |event| %>
+      <tr>
+        <td><%= event.name %></td>
+        <td><%= event.date %></td>
+        <td><%= event.city %></td>
+        <td><%= event.host.first_name %></td>
+        <td>
+          <% if event.host.id == session[:user_id] %>
+            <a href=''>Edit</a> | <a href=''>Delete</a>
+          <% elsif session[:user_id] == %>
+
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h3>Here are some of the events at other states</h3>
+<table class="table table-striped">
+  <thead>
+    <th>Name</th>
+    <th>Date</th>
+    <th>Location</th>
+    <th>State</th>
+    <th>Host</th>
+    <th>Action</th>
+  </thead>
+  <tbody>
+    <% @other_events.each do |event| %>
+      <tr>
+        <td><%= event.name %></td>
+        <td><%= event.date %></td>
+        <td><%= event.city %></td>
+        <td><%= event.state %></td>
+        <td><%= event.host.first_name %></td>
+        <td>
+          <% if event.host.id == session[:user_id] %>
+            <a href=''>Edit</a> | <a href=''>Delete</a>
+          <% elsif session[:user_id] == %>
+
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h3>Add Event</h3>
+<% if flash[:notice] %>
+  <% flash[:notice].each do |notice| %>
+    <p class="text-danger"><%= notice %></p>
+  <% end %>
+<% end %>
+<%= form_for @event do |f| %>
+  <div class="form-group">
+    <%= f.label "Name:" %>
+    <%= f.text_field :name %>
+  </div>
+  <div class="form-group">
+    <%= f.label "Date:" %>
+    <%= f.date_field :date %>
+  </div>
+  <div class="form-group">
+    <%= f.label "Location:" %>
+    <%= f.text_field :city %>
+    <%= f.select :state, options_for_select(us_states) %>
+  </div>
+  <%= f.submit 'Submit' %>
+<% end %>

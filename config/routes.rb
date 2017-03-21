@@ -10,6 +10,6 @@ Rails.application.routes.draw do
   get 'events/:id/edit' => 'events#edit'
 
   post 'sessions' => 'sessions#create'
-  get 'sessions/logout' => 'session#destroy'
+  get 'sessions/logout' => 'sessions#destroy'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
