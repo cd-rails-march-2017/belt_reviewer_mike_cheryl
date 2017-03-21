@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   post 'events' => 'events#create'
   get 'events/:id' => 'events#show'
   get 'events/:id/edit' => 'events#edit'
+  patch 'events/:id' => 'events#update'
+  delete 'events/:id' => 'events#destroy'
   post 'events/:id' => 'comments#create'
   get 'events/:id/join' => 'events#join_event'
   get 'events/:id/unjoin' => 'events#leave_event'

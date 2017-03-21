@@ -20,7 +20,7 @@
         <td><%= event.host.first_name %></td>
         <td>
           <% if event.host.id == session[:user_id] %>
-            <a href=''>Edit</a> | <a href=''>Delete</a>
+            <a href="/events/<%= event.id %>/edit">Edit</a> | <a href="/events/<%= event.id %>" data-method="delete">Delete</a>
           <% elsif @attending.include?(event) %>
             <span>Joining</span> | <a href="/events/<%= event.id %>/unjoin">Cancel</a>
           <% else %>
@@ -52,9 +52,11 @@
         <td><%= event.host.first_name %></td>
         <td>
           <% if event.host.id == session[:user_id] %>
-            <a href=''>Edit</a> | <a href=''>Delete</a>
-          <% elsif session[:user_id] == %>
-
+            <a href="/events/<%= event.id %>/edit">Edit</a> | <a href="/events/<%= event.id %>" data-method="delete">Delete</a>
+          <% elsif @attending.include?(event) %>
+            <span>Joining</span> | <a href="/events/<%= event.id %>/unjoin">Cancel</a>
+          <% else %>
+            <a href="/events/<%= event.id %>/join">Join</a>
           <% end %>
         </td>
       </tr>

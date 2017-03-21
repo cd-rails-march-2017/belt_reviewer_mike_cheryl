@@ -24,6 +24,21 @@ class EventsController < ApplicationController
     @comments = Comment.where("event_id = ?", @event.id).order("created_at DESC")
   end
 
+  def edit
+    @event = Event.find(params[:id])
+  end
+
+  def update
+    @event = Event.find(params[:id])
+    @event.update(name: params[:name], date: params[:date], city: params[:city], state: params[:state])
+    if @event.save
+      redirect_to events_path
+    else
+      flash[:notice] = @event.errors.full_messages
+      redirect_to :back
+    end
+  end
+
   def join_event
     EventAttendee.create(event_id: params[:id], user_id: session[:user_id])
     redirect_to :back
@@ -33,6 +48,12 @@ class EventsController < ApplicationController
     @event = EventAttendee.find_by("event_id = ? AND user_id = ?", params[:id], session[:user_id])
     @event.destroy
     redirect_to :back
+  end
+
+  def destroy
+    @event = Event.find(params[:id])
+    @event.destroy
+    redirect_to events_path
   end
 
   protected
