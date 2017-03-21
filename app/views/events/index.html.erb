@@ -3,7 +3,6 @@
   <h3>Welcome, <%= @user.first_name %> </h3>
 
   <h3>Here are some of the events in your state</h3>
-
   <table class="table table-striped">
     <thead>
       <th>Name</th>
@@ -21,7 +20,7 @@
           <td><%= event.host.first_name %></td>
           <td>
             <% if event.host.id == session[:user_id] %>
-              <a href=''>Edit</a> | <a href=''>Delete</a>
+              <a href="/events/<%= event.id %>/edit">Edit</a> | <a href="/events/<%= event.id %>" data-method="delete">Delete</a>
             <% elsif @attending.include?(event) %>
               <span>Joining</span> | <a href="/events/<%= event.id %>/unjoin">Cancel</a>
             <% else %>
@@ -33,7 +32,7 @@
     </tbody>
   </table>
 
-  <h3>Here are some of the events in other states</h3>
+    <h3>Here are some of the events in other states</h3>
   <table class="table table-striped">
     <thead>
       <th>Name</th>
@@ -53,7 +52,7 @@
           <td><%= event.host.first_name %></td>
           <td>
             <% if event.host.id == session[:user_id] %>
-              <a href=''>Edit</a> | <a href=''>Delete</a>
+              <a href="/events/<%= event.id %>/edit">Edit</a> | <a href="/events/<%= event.id %>" data-method="delete">Delete</a>
             <% elsif @attending.include?(event) %>
               <span>Joining</span> | <a href="/events/<%= event.id %>/unjoin">Cancel</a>
             <% else %>
@@ -64,29 +63,31 @@
       <% end %>
     </tbody>
   </table>
-
-  <h3>Add Event</h3>
-  <% if flash[:notice] %>
-    <% flash[:notice].each do |notice| %>
-      <p class="text-danger"><%= notice %></p>
+  <div class="col-md-4">
+    <h3>Add Event</h3>
+    <%= form_for @event do |f| %>
+      <div class="form-group">
+        <%= f.label "Name:" %>
+        <%= f.text_field :name %>
+      </div>
+      <div class="form-group">
+        <%= f.label "Date:" %>
+        <%= f.date_field :date %>
+      </div>
+      <div class="form-group">
+        <%= f.label "Location:" %>
+        <%= f.text_field :city %>
+        <%= f.select :state, options_for_select(us_states) %>
+      </div>
+      <%= f.submit 'Submit' %>
     <% end %>
-  <% end %>
-  <%= form_for @event do |f| %>
-    <div class="form-group">
-      <%= f.label "Name:" %>
-      <%= f.text_field :name %>
-    </div>
-    <div class="form-group">
-      <%= f.label "Date:" %>
-      <%= f.date_field :date %>
-    </div>
-    <div class="form-group">
-      <%= f.label "Location:" %>
-      <%= f.text_field :city %>
-      <%= f.select :state, options_for_select(us_states) %>
-    </div>
-    <%= f.submit 'Submit' %>
-  <% end %>
-
+  </div>
+  <div class="col-md-4">
+    <% if flash[:notice] %>
+      <% flash[:notice].each do |notice| %>
+        <p class="text-danger"><%= notice %></p>
+      <% end %>
+    <% end %>
+  </div>
 
 </div>

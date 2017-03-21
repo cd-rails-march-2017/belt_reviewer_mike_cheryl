@@ -6,7 +6,7 @@
   <% end %>
 <% end %>
 
-<%= form_tag("/users/#{@user.id}", method: "patch") do %>
+<%= form_tag("/events/#{@event.id}", method: "patch") do %>
   <div class="form-group">
     <%= label_tag(:first_name, "First Name:") %>
     <%= text_field_tag(:first_name, "#{@user.first_name}") %>
