@@ -1,0 +1,40 @@
+<h3>Welcome!</h3>
+
+<div id="register">
+  <%= form_for @user do |f| %>
+    <div class="form-group">
+      <%= f.label "First Name:" %>
+      <%= f.text_field :first_name %>
+    </div>
+    <div class="form-group">
+      <%= f.label "Last Name:" %>
+      <%= f.text_field :last_name %>
+    </div>
+    <div class="form-group">
+      <%= f.label "Email:" %>
+      <%= f.text_field :email %>
+    </div>
+    <div class="form-group">
+      <%= f.label "Location:" %>
+      <%= f.text_field :city %>
+      <%= f.select :state, options_for_select(us_states) %>
+    </div>
+    <div class="form-group">
+      <%= f.label "Password:" %>
+      <%= f.password_field :password %>
+      <h6>*Password should be at least 8 characters</h6>
+    </div>
+    <div class="form-group">
+      <%= f.label "Confirm Password:" %>
+      <%= f.password_field :confirm_pw %>
+    </div>
+    <%= f.submit 'Register' %>
+  <% end %>
+</div>
+
+
+<% if flash[:notice] %>
+  <% flash[:notice].each do |notice| %>
+    <p class="text-danger"><%= notice %></p>
+  <% end %>
+<% end %>
